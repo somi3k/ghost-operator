@@ -1,7 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6d9cb322-ef4e-4a43-ace7-bce45523da47" name="Default Changelist" comment="" />
+    <list default="true" id="6d9cb322-ef4e-4a43-ace7-bce45523da47" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hack/update-codegen.sh" beforeDir="false" afterPath="$PROJECT_DIR$/hack/update-codegen.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/apis/ghostcontroller/v1alpha1/register.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/apis/ghostcontroller/v1alpha1/register.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/clientset/versioned/clientset.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/generated/clientset/versioned/clientset.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/clientset/versioned/fake/clientset_generated.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/generated/clientset/versioned/fake/clientset_generated.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/clientset/versioned/fake/register.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/generated/clientset/versioned/fake/register.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/clientset/versioned/scheme/register.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/generated/clientset/versioned/scheme/register.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/clientset/versioned/typed/ghostcontroller/v1alpha1/fake/fake_ghost.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/generated/clientset/versioned/typed/ghostcontroller/v1alpha1/fake/fake_ghost.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/clientset/versioned/typed/ghostcontroller/v1alpha1/fake/fake_ghostcontroller_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/generated/clientset/versioned/typed/ghostcontroller/v1alpha1/fake/fake_ghostcontroller_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/clientset/versioned/typed/ghostcontroller/v1alpha1/ghost.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/generated/clientset/versioned/typed/ghostcontroller/v1alpha1/ghost.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/clientset/versioned/typed/ghostcontroller/v1alpha1/ghostcontroller_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/generated/clientset/versioned/typed/ghostcontroller/v1alpha1/ghostcontroller_client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/clientset/versioned/typed/samplecontroller/v1alpha1/doc.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/clientset/versioned/typed/samplecontroller/v1alpha1/fake/doc.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/clientset/versioned/typed/samplecontroller/v1alpha1/fake/fake_foo.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/clientset/versioned/typed/samplecontroller/v1alpha1/fake/fake_samplecontroller_client.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/clientset/versioned/typed/samplecontroller/v1alpha1/foo.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/clientset/versioned/typed/samplecontroller/v1alpha1/generated_expansion.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/clientset/versioned/typed/samplecontroller/v1alpha1/samplecontroller_client.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/informers/externalversions/factory.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/generated/informers/externalversions/factory.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/informers/externalversions/generic.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/generated/informers/externalversions/generic.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/informers/externalversions/ghostcontroller/interface.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/generated/informers/externalversions/ghostcontroller/interface.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/informers/externalversions/ghostcontroller/v1alpha1/ghost.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/generated/informers/externalversions/ghostcontroller/v1alpha1/ghost.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/informers/externalversions/ghostcontroller/v1alpha1/interface.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/generated/informers/externalversions/ghostcontroller/v1alpha1/interface.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/informers/externalversions/internalinterfaces/factory_interfaces.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/generated/informers/externalversions/internalinterfaces/factory_interfaces.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/informers/externalversions/samplecontroller/interface.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/informers/externalversions/samplecontroller/v1alpha1/foo.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/informers/externalversions/samplecontroller/v1alpha1/interface.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/listers/ghostcontroller/v1alpha1/ghost.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/generated/listers/ghostcontroller/v1alpha1/ghost.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/listers/samplecontroller/v1alpha1/expansion_generated.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/generated/listers/samplecontroller/v1alpha1/foo.go" beforeDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -11,43 +44,55 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../ghost-operator/controller.go">
+        <entry file="file://$PROJECT_DIR$/controller.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="618">
-              <caret line="391" column="28" selection-start-line="391" selection-start-column="28" selection-end-line="391" selection-end-column="28" />
+            <state relative-caret-position="480">
+              <caret line="32" column="50" selection-start-line="32" selection-start-column="50" selection-end-line="32" selection-end-column="50" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../ghost-operator/hack/update-codegen.sh">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="28" column="81" selection-start-line="28" selection-start-column="81" selection-end-line="28" selection-end-column="81" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../ghost-operator/pkg/apis/ghostcontroller/v1alpha1/register.go">
+        <entry file="file://$PROJECT_DIR$/hack/update-codegen.sh">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="450">
-              <caret line="36" column="68" selection-start-line="36" selection-start-column="68" selection-end-line="36" selection-end-column="68" />
+              <caret line="30" column="53" selection-start-line="30" selection-start-column="53" selection-end-line="30" selection-end-column="53" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../ghost-operator/pkg/apis/ghostcontroller/register.go">
+        <entry file="file://$PROJECT_DIR$/main.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" column="7" selection-start-line="18" selection-start-column="7" selection-end-line="18" selection-end-column="7" />
+            <state relative-caret-position="454">
+              <caret line="36" column="21" selection-start-line="36" selection-start-column="21" selection-end-line="36" selection-end-column="21" />
+              <folding>
+                <element signature="e#585#1092#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../ghost-operator/pkg/apis/ghostcontroller/v1alpha1/doc.go">
+        <entry file="file://$PROJECT_DIR$/pkg/apis/ghostcontroller/v1alpha1/register.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="345">
+              <caret line="23" column="54" selection-start-line="23" selection-start-column="54" selection-end-line="23" selection-end-column="54" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pkg/apis/ghostcontroller/register.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="2" lean-forward="true" selection-start-column="2" selection-end-column="2" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pkg/apis/ghostcontroller/v1alpha1/doc.go">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="60">
               <caret line="4" column="43" selection-start-line="4" selection-start-column="43" selection-end-line="4" selection-end-column="43" />
@@ -56,19 +101,16 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../ghost-operator/pkg/apis/ghostcontroller/v1alpha1/types.go">
+        <entry file="file://$PROJECT_DIR$/pkg/apis/ghostcontroller/v1alpha1/types.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
-              <caret line="33" selection-start-line="33" selection-end-line="33" />
-              <folding>
-                <element signature="e#589#646#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="270">
+              <caret line="18" column="8" selection-start-line="18" selection-start-column="8" selection-end-line="18" selection-end-column="8" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../ghost-operator/artifacts/examples/ininitializeghost.yaml">
+        <entry file="file://$PROJECT_DIR$/artifacts/examples/ininitializeghost.yaml">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="270">
               <caret line="18" selection-start-line="18" selection-end-line="18" />
@@ -83,6 +125,8 @@
       <find>GhostLister</find>
       <find>ghostSynced</find>
       <find>Foo</find>
+      <find>sample-controller</find>
+      <find>k8s.io/sample-controller</find>
     </findStrings>
     <replaceStrings>
       <replace>Ghost</replace>
@@ -93,7 +137,7 @@
   </component>
   <component name="GOROOT" path="/usr/local/opt/go/libexec" />
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../ghost-operator" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GoLibraries">
     <option name="indexEntireGoPath" value="false" />
@@ -104,10 +148,12 @@
         <option value="$PROJECT_DIR$/pkg/apis/samplecontroller/register.go" />
         <option value="$PROJECT_DIR$/pkg/apis/ghostcontroller/register.go" />
         <option value="$PROJECT_DIR$/pkg/apis/ghostcontroller/v1alpha1/types.go" />
-        <option value="$PROJECT_DIR$/pkg/apis/ghostcontroller/v1alpha1/register.go" />
-        <option value="$PROJECT_DIR$/controller.go" />
         <option value="$PROJECT_DIR$/pkg/apis/ghostcontroller/v1alpha1/doc.go" />
         <option value="$PROJECT_DIR$/pkg/generated/clientset/versioned/typed/samplecontroller/v1alpha1/foo.go" />
+        <option value="$PROJECT_DIR$/main.go" />
+        <option value="$PROJECT_DIR$/Godeps/Godeps.json" />
+        <option value="$PROJECT_DIR$/controller.go" />
+        <option value="$PROJECT_DIR$/pkg/apis/ghostcontroller/v1alpha1/register.go" />
         <option value="$PROJECT_DIR$/hack/update-codegen.sh" />
       </list>
     </option>
@@ -123,8 +169,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="119" />
-    <option name="y" value="57" />
+    <option name="x" value="83" />
+    <option name="y" value="36" />
     <option name="width" value="1400" />
     <option name="height" value="787" />
   </component>
@@ -192,6 +238,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="configurable.Global.GOPATH.is.expanded" value="true" />
     <property name="configurable.Project.GOPATH.is.expanded" value="true" />
@@ -239,9 +286,9 @@
     </configuration>
   </component>
   <component name="ToolWindowManager">
-    <frame x="119" y="57" width="1400" height="787" extended-state="0" />
+    <frame x="83" y="36" width="1400" height="787" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2533137" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2569956" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -272,33 +319,10 @@
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/../client-go/tools/cache/shared_informer.go" />
-    <entry file="file://$PROJECT_DIR$/../ghost-operator/artifacts/examples/crd.yaml">
+    <entry file="file://$PROJECT_DIR$/artifacts/examples/crd.yaml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/../ghost-operator/main.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="394">
-          <caret line="71" lean-forward="true" selection-start-line="71" selection-end-line="71" />
-          <folding>
-            <element signature="e#585#1092#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ghost-operator/docs/controller-client-go.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor />
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ghost-operator/Godeps/Godeps.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2539" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ghost-operator/pkg/generated/clientset/versioned/typed/samplecontroller/v1alpha1/foo.go">
+    <entry file="file://$PROJECT_DIR$/pkg/generated/clientset/versioned/typed/samplecontroller/v1alpha1/foo.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
           <caret line="27" column="54" selection-start-line="27" selection-start-column="48" selection-end-line="27" selection-end-column="54" />
@@ -306,55 +330,103 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/controller_test.go" />
-    <entry file="file://$PROJECT_DIR$/../ghost-operator/controller.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="618">
-          <caret line="391" column="28" selection-start-line="391" selection-start-column="28" selection-end-line="391" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ghost-operator/pkg/apis/ghostcontroller/v1alpha1/register.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="36" column="68" selection-start-line="36" selection-start-column="68" selection-end-line="36" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ghost-operator/pkg/apis/ghostcontroller/register.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="7" selection-start-line="18" selection-start-column="7" selection-end-line="18" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ghost-operator/pkg/apis/ghostcontroller/v1alpha1/doc.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="43" selection-start-line="4" selection-start-column="43" selection-end-line="4" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ghost-operator/pkg/apis/ghostcontroller/v1alpha1/types.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="33" selection-start-line="33" selection-end-line="33" />
-          <folding>
-            <element signature="e#589#646#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ghost-operator/artifacts/examples/ininitializeghost.yaml">
+    <entry file="file://$PROJECT_DIR$/artifacts/examples/ininitializeghost.yaml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="18" selection-start-line="18" selection-end-line="18" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../ghost-operator/hack/update-codegen.sh">
+    <entry file="file://$PROJECT_DIR$/controller.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="28" column="81" selection-start-line="28" selection-start-column="81" selection-end-line="28" selection-end-column="81" />
+        <state relative-caret-position="480">
+          <caret line="32" column="50" selection-start-line="32" selection-start-column="50" selection-end-line="32" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="454">
+          <caret line="36" column="21" selection-start-line="36" selection-start-column="21" selection-end-line="36" selection-end-column="21" />
+          <folding>
+            <element signature="e#585#1092#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pkg/apis/ghostcontroller/v1alpha1/register.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="23" column="54" selection-start-line="23" selection-start-column="54" selection-end-line="23" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pkg/apis/ghostcontroller/v1alpha1/doc.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="43" selection-start-line="4" selection-start-column="43" selection-end-line="4" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pkg/apis/ghostcontroller/v1alpha1/types.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="8" selection-start-line="18" selection-start-column="8" selection-end-line="18" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Godeps/Godeps.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3855">
+          <caret line="257" column="48" lean-forward="true" selection-start-line="257" selection-start-column="48" selection-end-line="257" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hack/tools.go">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hack/verify-codegen.sh">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/go.sum">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/go.mod">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="14" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pkg/apis/ghostcontroller/register.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="2" lean-forward="true" selection-start-column="2" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/images/client-go-controller-interaction.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/controller-client-go.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hack/update-codegen.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="30" column="53" selection-start-line="30" selection-start-column="53" selection-end-line="30" selection-end-column="53" />
         </state>
       </provider>
     </entry>

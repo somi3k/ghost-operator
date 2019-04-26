@@ -1,4 +1,5 @@
 .DS_Store
+ghost-operator
 code-generator/
 docs/
 Godeps/

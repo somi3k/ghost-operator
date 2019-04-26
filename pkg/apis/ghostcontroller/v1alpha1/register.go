@@ -21,7 +21,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	ghostcontroller "k8s.io/sample-controller/pkg/apis/ghostcontroller"
+	ghostcontroller "github.com/somi3k/ghost-operator/pkg/apis/ghostcontroller"
 )
 
 // SchemeGroupVersion is group version used to register these objects

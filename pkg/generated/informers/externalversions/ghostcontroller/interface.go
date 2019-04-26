@@ -19,8 +19,8 @@ limitations under the License.
 package ghostcontroller
 
 import (
-	v1alpha1 "k8s.io/sample-controller/pkg/generated/informers/externalversions/ghostcontroller/v1alpha1"
-	internalinterfaces "k8s.io/sample-controller/pkg/generated/informers/externalversions/internalinterfaces"
+	v1alpha1 "github.com/somi3k/ghost-operator/pkg/generated/informers/externalversions/ghostcontroller/v1alpha1"
+	internalinterfaces "github.com/somi3k/ghost-operator/pkg/generated/informers/externalversions/internalinterfaces"
 )
 
 // Interface provides access to each of this group's versions.

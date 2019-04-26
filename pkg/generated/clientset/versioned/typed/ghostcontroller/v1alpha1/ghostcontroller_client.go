@@ -19,9 +19,9 @@ limitations under the License.
 package v1alpha1
 
 import (
+	v1alpha1 "github.com/somi3k/ghost-operator/pkg/apis/ghostcontroller/v1alpha1"
+	"github.com/somi3k/ghost-operator/pkg/generated/clientset/versioned/scheme"
 	rest "k8s.io/client-go/rest"
-	v1alpha1 "k8s.io/sample-controller/pkg/apis/ghostcontroller/v1alpha1"
-	"k8s.io/sample-controller/pkg/generated/clientset/versioned/scheme"
 )
 
 type GhostcontrollerV1alpha1Interface interface {

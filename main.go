@@ -27,9 +27,9 @@ import (
 	// Uncomment the following line to load the gcp plugin (only required to authenticate against GKE clusters).
 	// _ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 
-	clientset "k8s.io/sample-controller/pkg/generated/clientset/versioned"
-	informers "k8s.io/sample-controller/pkg/generated/informers/externalversions"
-	"k8s.io/sample-controller/pkg/signals"
+	clientset "github.com/somi3k/ghost-operator/pkg/generated/clientset/versioned"
+	informers "github.com/somi3k/ghost-operator/pkg/generated/informers/externalversions"
+	"github.com/somi3k/ghost-operator/pkg/signals"
 )
 
 var (

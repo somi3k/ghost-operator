@@ -36,11 +36,11 @@ import (
 	"k8s.io/client-go/util/workqueue"
 	"k8s.io/klog"
 
-	samplev1alpha1 "k8s.io/sample-controller/pkg/apis/ghostcontroller/v1alpha1"
-	clientset "k8s.io/sample-controller/pkg/generated/clientset/versioned"
-	samplescheme "k8s.io/sample-controller/pkg/generated/clientset/versioned/scheme"
-	informers "k8s.io/sample-controller/pkg/generated/informers/externalversions/ghostcontroller/v1alpha1"
-	listers "k8s.io/sample-controller/pkg/generated/listers/ghostcontroller/v1alpha1"
+	samplev1alpha1 "github.com/somi3k/ghost-operator/pkg/apis/ghostcontroller/v1alpha1"
+	clientset "github.com/somi3k/ghost-operator/pkg/generated/clientset/versioned"
+	samplescheme "github.com/somi3k/ghost-operator/pkg/generated/clientset/versioned/scheme"
+	informers "github.com/somi3k/ghost-operator/pkg/generated/informers/externalversions/ghostcontroller/v1alpha1"
+	listers "github.com/somi3k/ghost-operator/pkg/generated/listers/ghostcontroller/v1alpha1"
 )
 
 const controllerAgentName = "ghost-operator"

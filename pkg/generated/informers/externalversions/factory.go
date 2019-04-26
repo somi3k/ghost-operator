@@ -23,13 +23,13 @@ import (
 	sync "sync"
 	time "time"
 
+	versioned "github.com/somi3k/ghost-operator/pkg/generated/clientset/versioned"
+	ghostcontroller "github.com/somi3k/ghost-operator/pkg/generated/informers/externalversions/ghostcontroller"
+	internalinterfaces "github.com/somi3k/ghost-operator/pkg/generated/informers/externalversions/internalinterfaces"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	cache "k8s.io/client-go/tools/cache"
-	versioned "k8s.io/sample-controller/pkg/generated/clientset/versioned"
-	ghostcontroller "k8s.io/sample-controller/pkg/generated/informers/externalversions/ghostcontroller"
-	internalinterfaces "k8s.io/sample-controller/pkg/generated/informers/externalversions/internalinterfaces"
 )
 
 // SharedInformerOption defines the functional option type for SharedInformerFactory.
