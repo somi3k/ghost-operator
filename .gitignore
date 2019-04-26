@@ -1,4 +1,4 @@
 .DS_Store
-code-generator\
-docs\
-Godeps\
+code-generator/
+docs/
+Godeps/
