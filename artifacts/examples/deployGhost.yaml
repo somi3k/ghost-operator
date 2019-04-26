@@ -1,0 +1,74 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: blog
+spec:
+  type: LoadBalancer
+  selector:
+    app: blog
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 2368
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: blog-content
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: blog-content
+  labels:
+    app: blog
+spec:
+  storageClassName: manual
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: blog
+  labels:
+    app: blog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blog
+  template:
+    metadata:
+      labels:
+        app: blog
+    spec:
+      containers:
+      - name: blog
+        image: ghost:2.6-alpine
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: url
+          value: http://192.168.99.100
+        ports:
+        - containerPort: 2368
+        volumeMounts:
+        - name: content
+          mountPath: /var/lib/ghost/content
+      volumes:
+      - name: content
+        persistentVolumeClaim:
+          claimName: blog-content
