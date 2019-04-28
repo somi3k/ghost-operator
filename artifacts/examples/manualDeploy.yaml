@@ -58,7 +58,7 @@ spec:
     spec:
       containers:
       - name: blog
-        image: ghost:2.6-alpine
+        image: ghost:2.21
         imagePullPolicy: IfNotPresent
         env:
         - name: url
