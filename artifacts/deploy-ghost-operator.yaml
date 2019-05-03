@@ -1,0 +1,52 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: ghost-operator-role
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: ghosts.ghostcontroller.somi3k
+  annotations:
+    composition: Deployment, Service
+spec:
+  group: ghostcontroller.somi3k
+  version: v1alpha1
+  names:
+    kind: Ghost
+    plural: ghosts
+  scope: Namespaced
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ghost-operator-deployment
+  labels:
+    app: ghost-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ghost-operator
+  template:
+    metadata:
+      labels:
+        app: ghost-operator
+    spec:
+      containers:
+        - name: ghost-operator
+          image: ghost-operator:v1alpha1
+          imagePullPolicy: IfNotPresent
+          command: ["/ghost-operator"]
+
+
+

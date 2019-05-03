@@ -1,4 +1,6 @@
-# sample-controller
+# ghost-operator
+
+## The following is cloned from k8s.io/sample-controller and is UNDER DEVELOPMENT.  It will be updated incrementally and this Readme will reflect current progress on this project in the near future.
 
 This repository implements a simple controller for watching Foo resources as
 defined with a CustomResourceDefinition (CRD).

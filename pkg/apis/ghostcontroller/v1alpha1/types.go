@@ -35,6 +35,7 @@ type Ghost struct {
 // GhostSpec is the spec for a Ghost resource
 type GhostSpec struct {
 	DeploymentName string `json:"deploymentName"`
+	Image string `json:"image"`
 	Replicas       *int32 `json:"replicas"`
 }
 

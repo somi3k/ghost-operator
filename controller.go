@@ -389,7 +389,7 @@ func (c *Controller) handleObject(obj interface{}) {
 // the Ghost resource that 'owns' it.
 func newDeployment(ghost *samplev1alpha1.Ghost) *appsv1.Deployment {
 	labels := map[string]string{
-		"app":        "ghost",           //////////////////////////////////////////////////////////////////////
+		"app":        "ghost-blog",           //////////////////////////////////////////////////////////////////////
 		"controller": ghost.Name,
 	}
 	return &appsv1.Deployment{
@@ -412,7 +412,7 @@ func newDeployment(ghost *samplev1alpha1.Ghost) *appsv1.Deployment {
 				Spec: corev1.PodSpec{
 					Containers: []corev1.Container{
 						{
-							Name:  "ghost",                ///////////////////////////////////////////////////////////
+							Name:  "ghost-blog",                ///////////////////////////////////////////////////////////
 							Image: "ghost:2.21",
 						},
 					},

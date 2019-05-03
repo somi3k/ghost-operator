@@ -63,7 +63,7 @@ spec:
 #          command: [ "/ghost-operator"]
           env:
             - name: url
-              value: http://192/168.99.100
+              value: http://192/168.99.101
           ports:
             - containerPort: 2368
           volumeMounts:
