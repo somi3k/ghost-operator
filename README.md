@@ -20,7 +20,7 @@
 3. modify <code> /artifacts/ghost.yaml </code> to match the desired installation specs
 4. deploy ghost container <code> kubectl apply -f ./arifacts/ghost.yaml </code>
 
-<br>
+
 ![ghost-operator setup](https://raw.githubusercontent.com/somi3k/ghost-operator/master/deploy.jpg)
 <br>
 
@@ -29,7 +29,7 @@
 2. view full deployment configuration <code> kubectl describe ghost <deployment name>  </code>
 3. delete Ghost deployment <code> kubectl delete ghost <deployment name> </code>
 
-<br>
+
 ![ghost-operator status](https://raw.githubusercontent.com/somi3k/ghost-operator/master/status.jpg)
 <br>
 
