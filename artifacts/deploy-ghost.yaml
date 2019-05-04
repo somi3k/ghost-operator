@@ -2,16 +2,14 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ghost-blog
-  labels:
-    app: ghost-blog
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: ghost-blog
   ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 2368
+  - protocol: TCP
+    port: 80
+    targetPort: 2368
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -37,42 +35,7 @@ metadata:
 spec:
   storageClassName: manual
   accessModes:
-    - ReadWriteOnce
+  - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: ghost-blog
-  labels:
-    app: ghost-blog
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: ghost-blog
-  template:
-    metadata:
-      labels:
-        app: ghost-blog
-    spec:
-      containers:
-        - name: ghost-blog
-          image: ghost:2.21
-          imagePullPolicy: IfNotPresent
-          # command: [ "/ghost-operator"]
-          env:
-            - name: url
-              value: http://192/168.99.102
-          ports:
-            - containerPort: 2368
-              name: ghost-blog
-          volumeMounts:
-            - name: ghost-blog-persistent-store
-              mountPath: /var/lib/ghost/content
-      volumes:
-        - name: ghost-blog-persistent-store
-          persistentVolumeClaim:
-            claimName: ghost-blog-content

@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: blog
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: blog
   ports:
@@ -40,7 +40,7 @@ spec:
     requests:
       storage: 1Gi
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: blog
@@ -66,9 +66,9 @@ spec:
         ports:
         - containerPort: 2368
         volumeMounts:
-        - name: content
+        - name: blog-content
           mountPath: /var/lib/ghost/content
       volumes:
-      - name: content
+      - name: blog-content
         persistentVolumeClaim:
           claimName: blog-content

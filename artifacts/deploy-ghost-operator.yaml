@@ -47,6 +47,3 @@ spec:
           image: ghost-operator:v1alpha1
           imagePullPolicy: IfNotPresent
           command: ["/ghost-operator"]
-
-
-
