@@ -21,7 +21,7 @@
 4. deploy ghost container <code> kubectl apply -f ./arifacts/ghost.yaml </code>
 
 <br>
-![ghost-operator setup](https://somi3k/ghost-operator/blob/master/deploy.jpg)
+![ghost-operator setup](https://github.com/somi3k/ghost-operator/blob/master/deploy.jpg)
 <br>
 
 ## Using ghost-operator
@@ -30,7 +30,7 @@
 3. delete Ghost deployment <code> kubectl delete ghost <deployment name> </code>
 
 <br>
-![ghost-operator setup](https://somi3k/ghost-operator/blob/master/status.jpg)
+![ghost-operator setup](https://github.com/somi3k/ghost-operator/blob/master/status.jpg)
 <br>
 
 
