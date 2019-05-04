@@ -4,6 +4,12 @@
 
 <br>
 
+<p align="center"> 
+    <a href="https://ghost.org/">
+        <img src="https://raw.githubusercontent.com/somi3k/ghost-operator/master/ghost.jpg">
+    </a>
+</p>
+
 ## Installation and Dependencies
 1. the Kubernetes cluster version should be greater than 1.9.
 2. clone this repository <code> git clone https://github.com/somi3k/ghost-operator </code>
