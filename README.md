@@ -12,11 +12,14 @@
 
 ## Installation and Dependencies
 1. the Kubernetes cluster version should be greater than 1.9.
-2. clone this repository <code> git clone https://github.com/somi3k/ghost-operator </code>
-3. if running on minikube, set the docker daemon environment <code> eval $(minikube docker-env) </code>
-4. build the ghost-controller <code> export GOOS=linux; go build . </code>
-5. move the ghost-controller binary to ./artifacts <code> mv ghost-controller ./artifacts/ </code>
-6. build the ghost-operator container <code> docker build -t ghost-operator:v1alpha1 ./artifacts/ </code>
+2. clone this repo <code> git clone https<span></span>://github.com/somi3k/ghost-operator </code>
+3. [only if modifying project] install dep <code> sudo apt-get install go-dep </code>
+4. [only if modifying project] install project dependencies <code> dep ensure </code>
+5. [only if modifying project] run <code> ./hack/update-codegen.sh </code> after making changes to project files
+5. if running on minikube, set the docker daemon <code> eval $(minikube docker-env) </code>
+6. build the ghost-controller <code> export GOOS=linux; go build . </code>
+7. move the ghost-controller binary <code> mv ghost-controller ./artifacts/ </code>
+8. build the ghost-operator container <code> docker build -t ghost-operator:v1alpha1 ./artifacts/ </code>
 
 <br>
 
