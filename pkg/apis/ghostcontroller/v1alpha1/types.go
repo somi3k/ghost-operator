@@ -17,6 +17,7 @@ limitations under the License.
 package v1alpha1
 
 import (
+	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -36,7 +37,11 @@ type Ghost struct {
 type GhostSpec struct {
 	DeploymentName string `json:"deploymentName"`
 	Image string `json:"image"`
-	Replicas       *int32 `json:"replicas"`
+	Replicas *int32 `json:"replicas"`
+	PersistentVolume v1.PersistentVolume `json:"persistentVolume"`
+	PersistentVolumeClaim v1.PersistentVolumeClaim `json:"persistentVolumeClaim"`
+
+
 }
 
 // GhostStatus is the status for a Ghost resource

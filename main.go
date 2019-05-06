@@ -18,6 +18,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"time"
 
 	kubeinformers "k8s.io/client-go/informers"
@@ -38,6 +39,8 @@ var (
 )
 
 func main() {
+	fmt.Println("************ main.go")
+
 	flag.Parse()
 
 	// set up signals so we handle the first shutdown signal gracefully
@@ -59,16 +62,16 @@ func main() {
 	}
 
 	kubeInformerFactory := kubeinformers.NewSharedInformerFactory(kubeClient, time.Second*30)
-	exampleInformerFactory := informers.NewSharedInformerFactory(exampleClient, time.Second*30)
+	ghostInformerFactory := informers.NewSharedInformerFactory(exampleClient, time.Second*30)
 
 	controller := NewController(kubeClient, exampleClient,
 		kubeInformerFactory.Apps().V1().Deployments(),
-		exampleInformerFactory.Ghostcontroller().V1alpha1().Ghosts())
+		ghostInformerFactory.Ghostcontroller().V1alpha1().Ghosts())
 
 	// notice that there is no need to run Start methods in a separate goroutine. (i.e. go kubeInformerFactory.Start(stopCh)
 	// Start method is non-blocking and runs all registered informers in a dedicated goroutine.
 	kubeInformerFactory.Start(stopCh)
-	exampleInformerFactory.Start(stopCh)
+	ghostInformerFactory.Start(stopCh)
 
 	if err = controller.Run(2, stopCh); err != nil {
 		klog.Fatalf("Error running controller: %s", err.Error())

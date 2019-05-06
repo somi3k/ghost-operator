@@ -69,6 +69,7 @@ type Controller struct {
 
 	deploymentsLister appslisters.DeploymentLister
 	deploymentsSynced cache.InformerSynced
+
 	ghostsLister        listers.GhostLister
 	ghostsSynced        cache.InformerSynced
 
@@ -85,10 +86,13 @@ type Controller struct {
 
 // NewController returns a new ghost controller
 func NewController(
+
 	kubeclientset kubernetes.Interface,
 	ghostclientset clientset.Interface,
 	deploymentInformer appsinformers.DeploymentInformer,
 	ghostInformer informers.GhostInformer) *Controller {
+
+	fmt.Println("*************************** NewController() :  controller.go")
 
 	// Create event broadcaster
 	// Add ghost-operator types to the default Kubernetes Scheme so Events can be
@@ -148,6 +152,8 @@ func NewController(
 // is closed, at which point it will shutdown the workqueue and wait for
 // workers to finish processing their current work items.
 func (c *Controller) Run(threadiness int, stopCh <-chan struct{}) error {
+	fmt.Println("*************************** Run() :  controller.go")
+
 	defer utilruntime.HandleCrash()
 	defer c.workqueue.ShutDown()
 
@@ -177,6 +183,7 @@ func (c *Controller) Run(threadiness int, stopCh <-chan struct{}) error {
 // processNextWorkItem function in order to read and process a message on the
 // workqueue.
 func (c *Controller) runWorker() {
+
 	for c.processNextWorkItem() {
 	}
 }
@@ -275,6 +282,9 @@ func (c *Controller) syncHandler(key string) error {
 	if errors.IsNotFound(err) {
 		deployment, err = c.kubeclientset.AppsV1().Deployments(ghost.Namespace).Create(newDeployment(ghost))
 	}
+	fmt.Printf("********* deployment name: %v", deployment.Name)
+	klog.Info(deploymentName, deployment.Name)
+
 
 	// If an error occurs during Get/Create, we'll requeue the item so we can
 	// attempt processing again later. This could have been caused by a

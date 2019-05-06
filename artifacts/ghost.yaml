@@ -7,6 +7,8 @@ spec:
     deploymentName: ghost1
     image: ghost:2.21
     replicas: 1
+    persistentVolume:
+    persistentVolumeClaim: ghost-blog-content
     selector:
         matchLabels:
             app: ghost-blog
