@@ -3,11 +3,36 @@ kind: Ghost
 metadata:
     name: ghost1
 spec:
-    url: http://192.168.99.102
+    url: http://192.168.99.102:32182
     deploymentName: ghost1
     image: ghost:2.21
-    replicas: 2
-
+    replicas: 1
+    selector:
+        matchLabels:
+            app: ghost-blog
+    template:
+        metadata:
+            labels:
+                app: ghost-blog
+        spec:
+            containers:
+                - name: ghost-blog
+                  image: ghost:2.21
+                  imagePullPolicy: IfNotPresent
+                    # command: [ "/ghost-operator"]
+                  env:
+                      - name: url
+                        value: http://192/168.99.102
+                  ports:
+                      - containerPort: 2368
+                        name: ghost-blog
+                  volumeMounts:
+                      - name: ghost-blog-persistent-store
+                        mountPath: /var/lib/ghost/content
+            volumes:
+                - name: ghost-blog-persistent-store
+                  persistentVolumeClaim:
+                      claimName: ghost-blog-content
 
 #apiVersion: apps/v1
 #kind: Deployment
