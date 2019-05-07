@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"k8s.io/apimachinery/pkg/api/resource"
 	"k8s.io/apimachinery/pkg/util/intstr"
+	"strconv"
 	"time"
 
 	appsv1 "k8s.io/api/apps/v1"
@@ -43,6 +44,16 @@ import (
 	samplescheme "github.com/somi3k/ghost-operator/pkg/generated/clientset/versioned/scheme"
 	informers "github.com/somi3k/ghost-operator/pkg/generated/informers/externalversions/ghostcontroller/v1alpha1"
 	listers "github.com/somi3k/ghost-operator/pkg/generated/listers/ghostcontroller/v1alpha1"
+)
+
+const (
+	GHOST_EXTERNAL_PORT = 32500
+	GHOST_IMAGE = "ghost:2.21"
+	GHOST_VOLUME_SIZE = 1000000000
+	GHOST_API_VERSION = "ghostcontroller.somi3k/v1alpha1"
+	GHOST_CONTAINER_NAME = "ghost-blog"
+	GHOST_VOLUME_NAME = "ghost-blog-persistent-store"
+	GHOST_CLAIM_NAME = "ghost-blog-content"
 )
 
 const controllerAgentName = "ghost-operator"
@@ -278,7 +289,7 @@ func (c *GhostController) syncHandler(key string) error {
 		return err
 	}
 
-	deploymentName := ghost.Spec.DeploymentName
+	deploymentName := ghost.Name
 	if deploymentName == "" {
 		// We choose to absorb the error here as the worker would requeue the
 		// resource otherwise. Instead, the next time the resource is updated
@@ -415,6 +426,31 @@ func (c *GhostController) handleObject(obj interface{}) {
 	}
 }
 
+func (c *GhostController) deployGhost(ghost *v1alpha1.Ghost) (string, string, err) {
+
+	fmt.Println("*************************** deployGhost() :  controller.go")
+
+	var serviceURL string
+	
+	c.createPersistentVolume(ghost)
+	c.createPersistentVolumeClaim(ghost)
+
+	servicePort := c.createService(ghost)
+
+	err, deployName := c.createDeployment(ghost)
+
+	if err != nil {
+		return deployName, servicePort, err
+	}
+
+	serviceURL := ghost.Name + ":" + servicePort
+
+	return serviceURL, deployName, err
+
+}
+
+
+
 
 //func (c *GhostController) newDeployment(ghost *v1alpha1.Ghost) *appsv1.Deployment {
 //	labels := map[string]string{
@@ -457,35 +493,75 @@ func (c *GhostController) handleObject(obj interface{}) {
 // the Ghost resource that 'owns' it.
 func (c *GhostController) createDeployment(ghost *v1alpha1.Ghost) (error, string) {
 
-	fmt.Println("*************************** createDeploy() :  controller.go")
+	fmt.Println("*************************** createDeployment() :  controller.go")
 
-	labels := map[string]string{
-		"app":        "ghost-blog",
-		"controller": ghost.Name,
-	}
+	namespace := getNamespace(ghost)
 
-	return &appsv1.Deployment{
+
+	deploymentName := ghost.Name
+
+	hostName := deploymentName + ":" + strconv.Itoa(GHOST_EXTERNAL_PORT)
+
+	fmt.Println("######## hostname  %s ######## createDeployment() :  controller.go")
+
+	deployment := &appsv1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      ghost.Spec.DeploymentName,
-			Namespace: ghost.Namespace,
+			Name:      deploymentName,
 			OwnerReferences: []metav1.OwnerReference{
-				*metav1.NewControllerRef(ghost, v1alpha1.SchemeGroupVersion.WithKind("Ghost")),
+				{
+					APIVersion: GHOST_API_VERSION,
+					Kind:       "Ghost",
+					Name:       ghost.Name,
+					UID:        ghost.UID,
+				},
 			},
 		},
 		Spec: appsv1.DeploymentSpec{
 			Replicas: ghost.Spec.Replicas,
 			Selector: &metav1.LabelSelector{
-				MatchLabels: labels,
+				MatchLabels: map[string]string{
+				    "app": deploymentName,
+			    },
 			},
 			Template: corev1.PodTemplateSpec{
 				ObjectMeta: metav1.ObjectMeta{
-					Labels: labels,
+					Labels: map[string]string{
+						"app": deploymentName,
+					},
 				},
 				Spec: corev1.PodSpec{
 					Containers: []corev1.Container{
 						{
-							Name:  "ghost-blog",
-							Image: "ghost:2.21",
+							Name:  GHOST_CONTAINER_NAME,
+							Image: GHOST_IMAGE,
+							Ports: []corev1.ContainerPort{
+								{
+									ContainerPort: GHOST_EXTERNAL_PORT,
+								},
+							},
+							Env: []corev1.EnvVar{
+								{
+									Name: "url",
+									Value: hostName,
+								},
+							},
+							VolumeMounts: []corev1.VolumeMount{
+								{
+									Name: GHOST_VOLUME_NAME,
+									MountPath: "/var/lib/ghost/content",
+								},
+							},
+
+						},
+					},
+					Volumes: []corev1.Volume{
+						{
+							Name: GHOST_VOLUME_NAME,
+							VolumeSource: corev1.VolumeSource{
+								PersistentVolumeClaim: &corev1.PersistentVolumeClaimVolumeSource{
+									ClaimName: GHOST_CLAIM_NAME,
+								},
+							},
 						},
 					},
 				},
@@ -493,9 +569,18 @@ func (c *GhostController) createDeployment(ghost *v1alpha1.Ghost) (error, string
 		},
 	}
 
+	fmt.Println("########### creating deployment ########## createDeployment() : controller.go")
 
+	result, err := c.kubeclientset.AppsV1().Deployments(namespace).Create(deployment)
 
-	return nil, "sdaf"
+	if err != nil {
+		panic(err)
+		return err, ""
+	}
+
+	fmt.Println("########### created deployment %q ########## createDeployment() : controller.go", result.GetObjectMeta().GetName())
+
+	return nil, result.ObjectMeta.GetName()
 }
 
 
@@ -510,7 +595,7 @@ func(c *GhostController) createPersistentVolume(ghost *v1alpha1.Ghost) {
 
 			OwnerReferences: []metav1.OwnerReference{
 				{
-					APIVersion: "ghostcontroller.somi3k/v1alpha1",
+					APIVersion: GHOST_API_VERSION,
 					Kind:       "Ghost",
 					Name:       ghost.Name,
 					UID:        ghost.UID,
@@ -520,7 +605,7 @@ func(c *GhostController) createPersistentVolume(ghost *v1alpha1.Ghost) {
 		Spec: corev1.PersistentVolumeSpec{
 			StorageClassName: "standard",
 			Capacity: corev1.ResourceList{corev1.ResourceStorage:
-				*resource.NewQuantity(1000000000, resource.DecimalSI)},
+				*resource.NewQuantity(GHOST_VOLUME_SIZE, resource.DecimalSI)},
 			AccessModes: []corev1.PersistentVolumeAccessMode{corev1.ReadWriteOnce},
 			PersistentVolumeSource: corev1.PersistentVolumeSource{
 				HostPath: &corev1.HostPathVolumeSource{
@@ -551,7 +636,7 @@ func (c *GhostController) createPersistentVolumeClaim(ghost *v1alpha1.Ghost) {
 			Name: deploymentName,
 			OwnerReferences: []metav1.OwnerReference{
 				{
-					APIVersion: "ghostcontroller.somi3k/v1alpha1",
+					APIVersion: GHOST_API_VERSION,
 					Kind:       "Ghost",
 					Name:       ghost.Name,
 					UID:        ghost.UID,
@@ -603,7 +688,7 @@ func (c *GhostController) createService(ghost *v1alpha1.Ghost) string {
 			Name: deploymentName,
 			OwnerReferences: []metav1.OwnerReference{
 				{
-					APIVersion: "ghostcontroller.somi3k/v1alpha1",
+					APIVersion: GHOST_API_VERSION,
 					Kind:       "Ghost",
 					Name:       ghost.Name,
 					UID:        ghost.UID,
@@ -618,7 +703,7 @@ func (c *GhostController) createService(ghost *v1alpha1.Ghost) string {
 					Name:       "ghost-port",
 					Port:       80,
 					TargetPort: intstr.FromInt(2368),
-					NodePort:   32500,
+					NodePort:   GHOST_EXTERNAL_PORT,
 					Protocol:   corev1.ProtocolTCP,
 				},
 			},
@@ -635,7 +720,7 @@ func (c *GhostController) createService(ghost *v1alpha1.Ghost) string {
 
 	//nodePort1 := result1.Spec.Ports[0].NodePort
 	//nodePort := fmt.Sprint(nodePort1)
-	servicePort := fmt.Sprint(32500)
+	servicePort := fmt.Sprint(GHOST_EXTERNAL_PORT)
 
 	// Parse ServiceIP and Port
 	serviceIP := result1.Spec.ClusterIP
