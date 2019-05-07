@@ -39,7 +39,8 @@ var (
 )
 
 func main() {
-	fmt.Println("************ main.go")
+
+	fmt.Println("*************************** main() :  main.go")
 
 	flag.Parse()
 
@@ -56,15 +57,15 @@ func main() {
 		klog.Fatalf("Error building kubernetes clientset: %s", err.Error())
 	}
 
-	exampleClient, err := clientset.NewForConfig(cfg)
+	ghostClient, err := clientset.NewForConfig(cfg)
 	if err != nil {
 		klog.Fatalf("Error building example clientset: %s", err.Error())
 	}
 
 	kubeInformerFactory := kubeinformers.NewSharedInformerFactory(kubeClient, time.Second*30)
-	ghostInformerFactory := informers.NewSharedInformerFactory(exampleClient, time.Second*30)
+	ghostInformerFactory := informers.NewSharedInformerFactory(ghostClient, time.Second*30)
 
-	controller := NewController(kubeClient, exampleClient,
+	controller := NewController(kubeClient, ghostClient,
 		kubeInformerFactory.Apps().V1().Deployments(),
 		ghostInformerFactory.Ghostcontroller().V1alpha1().Ghosts())
 
