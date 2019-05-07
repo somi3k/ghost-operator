@@ -39,7 +39,8 @@ type GhostSpec struct {
 
 // GhostStatus is the status for a Ghost resource
 type GhostStatus struct {
-	AvailableReplicas int32 `json:"availableReplicas"`
+	AvailableReplicas int32    `json:"availableReplicas"`
+	Url               string   `json:"url"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

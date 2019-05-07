@@ -20,7 +20,6 @@ import (
 	"fmt"
 	"k8s.io/apimachinery/pkg/api/resource"
 	"k8s.io/apimachinery/pkg/util/intstr"
-	"strconv"
 	"time"
 
 	appsv1 "k8s.io/api/apps/v1"
@@ -47,13 +46,13 @@ import (
 )
 
 const (
-	GHOST_EXTERNAL_PORT = 32500
 	GHOST_IMAGE = "ghost:2.21"
+	GHOST_EXTERNAL_PORT = 32500
 	GHOST_VOLUME_SIZE = 1000000000
 	GHOST_API_VERSION = "ghostcontroller.somi3k/v1alpha1"
 	GHOST_CONTAINER_NAME = "ghost-blog"
-	GHOST_VOLUME_NAME = "ghost-blog-persistent-store"
 	GHOST_CLAIM_NAME = "ghost-blog-content"
+	GHOST_VOLUME_NAME = "ghost-blog-persistent-store"
 )
 
 const controllerAgentName = "ghost-operator"
@@ -72,6 +71,7 @@ const (
 	// is synced successfully
 	MessageResourceSynced = "Ghost synced successfully"
 )
+
 
 // Controller is the controller implementation for Ghost resources
 type GhostController struct {
@@ -97,6 +97,7 @@ type GhostController struct {
 	recorder record.EventRecorder
 }
 
+
 // NewController returns a new ghost controller
 func NewController(
 
@@ -105,7 +106,7 @@ func NewController(
 	deploymentInformer appsinformers.DeploymentInformer,
 	ghostInformer informers.GhostInformer) *GhostController {
 
-	fmt.Println("*************************** NewController() :  controller.go")
+	fmt.Println("*************************** NewController() \n")
 
 	// Create event broadcaster
 	// Add ghost-operator types to the default Kubernetes Scheme so Events can be
@@ -160,13 +161,14 @@ func NewController(
 	return controller
 }
 
+
 // Run will set up the event handlers for types we are interested in, as well
 // as syncing informer caches and starting workers. It will block until stopCh
 // is closed, at which point it will shutdown the workqueue and wait for
 // workers to finish processing their current work items.
 func (c *GhostController) Run(threadiness int, stopCh <-chan struct{}) error {
 
-	fmt.Println("*************************** Run() :  controller.go")
+	fmt.Println("*************************** Run() \n")
 
 	defer utilruntime.HandleCrash()
 	defer c.workqueue.ShutDown()
@@ -193,22 +195,24 @@ func (c *GhostController) Run(threadiness int, stopCh <-chan struct{}) error {
 	return nil
 }
 
+
 // runWorker is a long-running function that will continually call the
 // processNextWorkItem function in order to read and process a message on the
 // workqueue.
 func (c *GhostController) runWorker() {
 
-	fmt.Println("*************************** runWorker() :  controller.go")
+	fmt.Println("*************************** runWorker() \n")
 
 	for c.processNextWorkItem() {
 	}
 }
 
+
 // processNextWorkItem will read a single work item off the workqueue and
 // attempt to process it, by calling the syncHandler.
 func (c *GhostController) processNextWorkItem() bool {
 
-	fmt.Println("*************************** processNextWorkItem() :  controller.go")
+	fmt.Println("*************************** processNextWorkItem() \n")
 
 	obj, shutdown := c.workqueue.Get()
 
@@ -262,12 +266,13 @@ func (c *GhostController) processNextWorkItem() bool {
 	return true
 }
 
+
 // syncHandler compares the actual state with the desired, and attempts to
 // converge the two. It then updates the Status block of the Ghost resource
 // with the current status of the resource.
 func (c *GhostController) syncHandler(key string) error {
 
-	fmt.Println("*************************** syncHandler() :  controller.go")
+	fmt.Println("*************************** syncHandler() \n")
 
 	// Convert the namespace/name string into a distinct namespace and name
 	namespace, name, err := cache.SplitMetaNamespaceKey(key)
@@ -297,16 +302,24 @@ func (c *GhostController) syncHandler(key string) error {
 		return nil
 	}
 
-    var status, url string
+    var status, url, serviceURL, deployName string
+	if ghost.Status.Url == "" {
+		fmt.Println("------------- syncHandler() -------- ghost.Status.Url is EMPTY \n")
+		serviceURL, deployName, err = c.deployGhost(ghost)
+	} else {
+		fmt.Println("--------------- syncHandler() -------- ghost.Status.Url = %s\n", ghost.Status.Url)
+	}
 
-	serviceURL, deployName, err := c.deployGhost(ghost)
+	fmt.Println("------------ syncHandler() ------------ serviceURL = %s,  deployName = %s,  err = %s\n",
+		serviceURL, deployName, err)
+
 
 	if err != nil {
 		status = err.Error()
 	} else {
 		status = "Ready"
 		url = "http://" + serviceURL
-		fmt.Println("########### url = %s ############# syncHandler() : controller.go", url)
+		fmt.Println("------------ syncHandler() ------------ url = %s", url)
 	}
 
 	c.updateGhostStatus(ghost, serviceURL, deployName, status, url)
@@ -319,7 +332,11 @@ func (c *GhostController) syncHandler(key string) error {
 	//if errors.IsNotFound(err) {
 	//	deployment, err = c.kubeclientset.AppsV1().Deployments(ghost.Namespace).Create(createDenewDeployment(ghost))
 	//}
-	fmt.Printf("********* deployment name: %v", deployment.Name)
+	fmt.Printf("------------ syncHandler() ------------ deployment = %s", deployment)
+	fmt.Printf("------------ syncHandler() ------------ deployment.Name = %s", deployment.Name)
+	fmt.Printf("------------ syncHandler() ------------ deployment.Namespace = %s", deployment.Namespace)
+
+
 
 
 	// If an error occurs during Get/Create, we'll requeue the item so we can
@@ -331,11 +348,11 @@ func (c *GhostController) syncHandler(key string) error {
 
 	// If the Deployment is not controlled by this Ghost resource, we should log
 	// a warning to the event recorder and ret
-	if !metav1.IsControlledBy(deployment, ghost) {
-		msg := fmt.Sprintf(MessageResourceExists, deployment.Name)
-		c.recorder.Event(ghost, corev1.EventTypeWarning, ErrResourceExists, msg)
-		return fmt.Errorf(msg)
-	}
+	//if !metav1.IsControlledBy(deployment, ghost) {
+	//	msg := fmt.Sprintf(MessageResourceExists, deployment.Name)
+	//	c.recorder.Event(ghost, corev1.EventTypeWarning, ErrResourceExists, msg)
+	//	return fmt.Errorf(msg)
+	//}
 
 	// If this number of the replicas on the Ghost resource is specified, and the
 	// number does not equal the current desired replicas on the Deployment, we
@@ -350,9 +367,9 @@ func (c *GhostController) syncHandler(key string) error {
 	// If an error occurs during Update, we'll requeue the item so we can
 	// attempt processing again later. This could have been caused by a
 	// temporary network failure, or any other transient reason.
-	if err != nil {
-		return err
-	}
+	//if err != nil {
+	//	return err
+	//}
 
 	// Finally, we update the status block of the Ghost resource to reflect the
 	// current state of the world
@@ -362,9 +379,9 @@ func (c *GhostController) syncHandler(key string) error {
 	//	return err
 	//}
 
-	c.recorder.Event(ghost, corev1.EventTypeNormal, SuccessSynced, MessageResourceSynced)
 	return nil
 }
+
 
 //func (c *GhostController) updateGhostStatus(ghost *v1alpha1.Ghost, deployment *appsv1.Deployment) error {
 func (c *GhostController) updateGhostStatus(ghost *v1alpha1.Ghost, serviceURL,
@@ -372,13 +389,14 @@ func (c *GhostController) updateGhostStatus(ghost *v1alpha1.Ghost, serviceURL,
 
 	//	c.updateGhostStatus(ghost, serviceURL, deployName, status, url)
 
-	fmt.Println("*************************** updateGhostStatus() :  controller.go")
+	fmt.Println("*************************** updateGhostStatus() \n")
 
 	// NEVER modify objects from the store. It's a read-only, local cache.
 	// You can use DeepCopy() to make a deep copy of original object and modify this copy
 	// Or create a copy manually for better performance
 	ghostCopy := ghost.DeepCopy()
 	ghostCopy.Status.AvailableReplicas = 6
+	ghostCopy.Status.Url = serviceURL
 
 	//ghostCopy.Status.AvailableReplicas = deployment.Status.AvailableReplicas
 
@@ -394,12 +412,13 @@ func (c *GhostController) updateGhostStatus(ghost *v1alpha1.Ghost, serviceURL,
 	return err
 }
 
+
 // enqueueGhost takes a Ghost resource and converts it into a namespace/name
 // string which is then put onto the work queue. This method should *not* be
 // passed resources of any type other than Ghost.
 func (c *GhostController) enqueueGhost(obj interface{}) {
 
-	fmt.Println("*************************** enqueueGhost() :  controller.go")
+	fmt.Println("*************************** enqueueGhost() \n")
 
 	var key string
 	var err error
@@ -410,6 +429,7 @@ func (c *GhostController) enqueueGhost(obj interface{}) {
 	c.workqueue.Add(key)
 }
 
+
 // handleObject will take any resource implementing metav1.Object and attempt
 // to find the Ghost resource that 'owns' it. It does this by looking at the
 // objects metadata.ownerReferences field for an appropriate OwnerReference.
@@ -418,7 +438,7 @@ func (c *GhostController) enqueueGhost(obj interface{}) {
 func (c *GhostController) handleObject(obj interface{}) {
 
 
-	fmt.Println("*************************** handleObject() :  controller.go")
+	fmt.Println("*************************** handleObject() \n")
 
 	var object metav1.Object
 	var ok bool
@@ -454,16 +474,23 @@ func (c *GhostController) handleObject(obj interface{}) {
 	}
 }
 
+
 func (c *GhostController) deployGhost(ghost *v1alpha1.Ghost) (string, string, error) {
 
-	fmt.Println("*************************** deployGhost() :  controller.go")
-	
+	fmt.Println("*************************** deployGhost() \n")
+
 	c.createPersistentVolume(ghost)
 	c.createPersistentVolumeClaim(ghost)
 
 	servicePort := c.createService(ghost)
 
+	fmt.Println("------------ deployGhost() ------------ servicePort = %s ", servicePort)
+
+
 	err, deployName := c.createDeployment(ghost)
+
+	fmt.Println("------------ deployGhost() ------------ deployName = %s ", deployName)
+
 
 	if err != nil {
 		return deployName, servicePort, err
@@ -471,11 +498,10 @@ func (c *GhostController) deployGhost(ghost *v1alpha1.Ghost) (string, string, er
 
 	serviceURL := ghost.Name + ":" + servicePort
 
+	fmt.Println("------------ deployGhost() ------------ serviceURL = %s ", serviceURL)
+
 	return serviceURL, deployName, err
-
 }
-
-
 
 
 //func (c *GhostController) newDeployment(ghost *v1alpha1.Ghost) *appsv1.Deployment {
@@ -519,16 +545,16 @@ func (c *GhostController) deployGhost(ghost *v1alpha1.Ghost) (string, string, er
 // the Ghost resource that 'owns' it.
 func (c *GhostController) createDeployment(ghost *v1alpha1.Ghost) (error, string) {
 
-	fmt.Println("*************************** createDeployment() :  controller.go")
+	fmt.Println("*************************** createDeployment() \n")
 
 	namespace := getNamespace(ghost)
 
 
 	deploymentName := ghost.Name
 
-	hostName := deploymentName + ":" + strconv.Itoa(GHOST_EXTERNAL_PORT)
+	///////////  hostName := deploymentName + ":" + strconv.Itoa(GHOST_EXTERNAL_PORT)
 
-	fmt.Println("######## hostname  %s ######## createDeployment() :  controller.go")
+	fmt.Println("------------ hostname  %s ----------- createDeployment() \n")
 
 	deployment := &appsv1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
@@ -546,13 +572,13 @@ func (c *GhostController) createDeployment(ghost *v1alpha1.Ghost) (error, string
 			Replicas: ghost.Spec.Replicas,
 			Selector: &metav1.LabelSelector{
 				MatchLabels: map[string]string{
-				    "app": deploymentName,
+				    "app": GHOST_CONTAINER_NAME,
 			    },
 			},
 			Template: corev1.PodTemplateSpec{
 				ObjectMeta: metav1.ObjectMeta{
 					Labels: map[string]string{
-						"app": deploymentName,
+						"app": GHOST_CONTAINER_NAME,
 					},
 				},
 				Spec: corev1.PodSpec{
@@ -560,15 +586,17 @@ func (c *GhostController) createDeployment(ghost *v1alpha1.Ghost) (error, string
 						{
 							Name:  GHOST_CONTAINER_NAME,
 							Image: GHOST_IMAGE,
-							Ports: []corev1.ContainerPort{
-								{
-									ContainerPort: GHOST_EXTERNAL_PORT,
-								},
-							},
+							ImagePullPolicy: "IfNotPresent",
 							Env: []corev1.EnvVar{
 								{
 									Name: "url",
-									Value: hostName,
+									Value: "http://192.168.99.104",
+								},
+							},
+							Ports: []corev1.ContainerPort{
+								{
+									Name: GHOST_CONTAINER_NAME,
+									ContainerPort: 2368,
 								},
 							},
 							VolumeMounts: []corev1.VolumeMount{
@@ -595,7 +623,7 @@ func (c *GhostController) createDeployment(ghost *v1alpha1.Ghost) (error, string
 		},
 	}
 
-	fmt.Println("########### creating deployment ########## createDeployment() : controller.go")
+	fmt.Println("------------ creating deployment ------------ createDeployment()  \n")
 
 	result, err := c.kubeclientset.AppsV1().Deployments(namespace).Create(deployment)
 
@@ -604,7 +632,8 @@ func (c *GhostController) createDeployment(ghost *v1alpha1.Ghost) (error, string
 		return err, ""
 	}
 
-	fmt.Println("########### created deployment %q ########## createDeployment() : controller.go", result.GetObjectMeta().GetName())
+	fmt.Println("------------ created deployment %s ------------ createDeployment()  \n",
+		result.GetObjectMeta().GetName())
 
 	return nil, result.ObjectMeta.GetName()
 }
@@ -612,13 +641,11 @@ func (c *GhostController) createDeployment(ghost *v1alpha1.Ghost) (error, string
 
 func(c *GhostController) createPersistentVolume(ghost *v1alpha1.Ghost) {
 
-	fmt.Println("*************************** createPersistentVolume() :  controller.go")
+	fmt.Println("*************************** createPersistentVolume() \n")
 
-	deploymentName := ghost.Name
 	persistentVolume :=  &corev1.PersistentVolume{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: deploymentName,
-
+			Name: GHOST_CLAIM_NAME,
 			OwnerReferences: []metav1.OwnerReference{
 				{
 					APIVersion: GHOST_API_VERSION,
@@ -642,24 +669,24 @@ func(c *GhostController) createPersistentVolume(ghost *v1alpha1.Ghost) {
 	}
 	persistentVolumeClient := c.kubeclientset.CoreV1().PersistentVolumes()
 
-	fmt.Println("########### creating pv ############# createPersistentVolume() : controller.go")
+	fmt.Println("------------ creating pv ------------ createPersistentVolume()  \n")
 
 	result, err := persistentVolumeClient.Create(persistentVolume)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("###########created pv %q ######## createPersistentVolume() : controller.go" , result.GetObjectMeta().GetName())
+	fmt.Printf("------------ created pv %q ------------ createPersistentVolume() \n " , result.GetObjectMeta().GetName())
 }
 
 
 func (c *GhostController) createPersistentVolumeClaim(ghost *v1alpha1.Ghost) {
 
-	fmt.Println("*************************** createPersistentVolumeClaim() :  controller.go")
+	fmt.Println("*************************** createPersistentVolumeClaim() \n")
 
-	deploymentName := ghost.Name
 	persistentVolumeClaim := &corev1.PersistentVolumeClaim{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: deploymentName,
+			Name: GHOST_CLAIM_NAME,
+			Labels: map[string]string{"app": GHOST_CONTAINER_NAME},
 			OwnerReferences: []metav1.OwnerReference{
 				{
 					APIVersion: GHOST_API_VERSION,
@@ -679,39 +706,25 @@ func (c *GhostController) createPersistentVolumeClaim(ghost *v1alpha1.Ghost) {
 	namespace := getNamespace(ghost)
 	persistentVolumeClaimClient := c.kubeclientset.CoreV1().PersistentVolumeClaims(namespace)
 
-	fmt.Println("########### creating pvc ############# createPersistentVolumeClaim() : controller.go")
+	fmt.Println("------------ creating pvc ------------ createPersistentVolumeClaim()  \n")
 	result, err := persistentVolumeClaimClient.Create(persistentVolumeClaim)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("###########created pv %q ######## createPersistentVolumeClaim() : controller.go" , result.GetObjectMeta().GetName())
+	fmt.Printf("------------ created pv %q ------------ createPersistentVolumeClaim()  \n",
+		result.GetObjectMeta().GetName())
 }
 
 
 func (c *GhostController) createService(ghost *v1alpha1.Ghost) string {
 
-	//1 apiVersion: v1
-	//2 kind: Service
-	//3 metadata:
-	//4   name: ghost-blog
-	//5 spec:
-	//6   type: NodePort
-	//7   selector:
-	//8     app: ghost-blog
-	//9   ports:
-	//10     - protocol: TCP
-	//11       port: 80
-	//12       targetPort: 2368
-
-	fmt.Println("*************************** createService() :  controller.go")
-
-	deploymentName := ghost.Name
+	fmt.Println("*************************** createService() \n")
 
 	namespace := getNamespace(ghost)
 	serviceClient := c.kubeclientset.CoreV1().Services(namespace)
 	service := &corev1.Service{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: deploymentName,
+			Name: GHOST_CONTAINER_NAME,
 			OwnerReferences: []metav1.OwnerReference{
 				{
 					APIVersion: GHOST_API_VERSION,
@@ -720,7 +733,6 @@ func (c *GhostController) createService(ghost *v1alpha1.Ghost) string {
 					UID:        ghost.UID,
 				},
 			},
-			Labels: map[string]string{"app": deploymentName},
 		},
 		Spec: corev1.ServiceSpec{
 			Type: corev1.ServiceTypeNodePort,
@@ -733,7 +745,7 @@ func (c *GhostController) createService(ghost *v1alpha1.Ghost) string {
 					Protocol:   corev1.ProtocolTCP,
 				},
 			},
-			Selector: map[string]string{"app": deploymentName,},
+			Selector: map[string]string{"app": GHOST_CONTAINER_NAME},
 		},
 	}
 
@@ -742,7 +754,8 @@ func (c *GhostController) createService(ghost *v1alpha1.Ghost) string {
 		panic(err1)
 	}
 
-	fmt.Println("##### created svc %q ####### createService() : controller.go", result1.GetObjectMeta().GetName())
+	fmt.Println("------------ created svc %s ----------- createService()  \n",
+		result1.GetObjectMeta().GetName())
 
 	//nodePort1 := result1.Spec.Ports[0].NodePort
 	//nodePort := fmt.Sprint(nodePort1)
@@ -750,21 +763,22 @@ func (c *GhostController) createService(ghost *v1alpha1.Ghost) string {
 
 	// Parse ServiceIP and Port
 	serviceIP := result1.Spec.ClusterIP
-	fmt.Printf("######### controller.go  : GHOST Service IP:%s", serviceIP)
+	fmt.Printf("------------ createService() : serviceIP = %s", serviceIP)
 
 	//servicePortInt := result1.Spec.Ports[0].Port
 	//servicePort := fmt.Sprint(servicePortInt)
 
 	serviceURI := serviceIP + ":" + servicePort
 
-	fmt.Printf("######### controller.go  : GHOST Service URI%s\n", serviceURI)
+	fmt.Printf("------------ createService() : serviceURI =  %s", serviceURI)
 
 	return servicePort
 }
 
+
 func getNamespace(ghost *v1alpha1.Ghost) string {
 
-	fmt.Println("*************************** getNamespace() :  controller.go")
+	fmt.Println("*************************** getNamespace() \n")
 
 	namespace := corev1.NamespaceDefault
 	if ghost.Namespace != "" {

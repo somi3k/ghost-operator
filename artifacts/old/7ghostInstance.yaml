@@ -3,12 +3,7 @@ kind: Ghost
 metadata:
   name: ghost1
 spec:
-  url: http://192.168.99.104
-  deploymentName: ghost1
-  image: ghost:2.21
   replicas: 1
-  persistentVolume:
-  persistentVolumeClaim: ghost-blog-content
   selector:
     matchLabels:
       app: ghost-blog
@@ -23,7 +18,7 @@ spec:
           imagePullPolicy: IfNotPresent
           env:
             - name: url
-              value: http://192/168.99.104
+              value: http://192.168.99.104
           ports:
             - containerPort: 2368
               name: ghost-blog
