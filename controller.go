@@ -285,7 +285,6 @@ func (c *GhostController) syncHandler(key string) error {
 			utilruntime.HandleError(fmt.Errorf("ghost '%s' in work queue no longer exists", key))
 			return nil
 		}
-
 		return err
 	}
 
@@ -298,12 +297,28 @@ func (c *GhostController) syncHandler(key string) error {
 		return nil
 	}
 
-	// Get the deployment with the name specified in Ghost.spec
+    var status, url string
+
+	serviceURL, deployName, err := c.deployGhost(ghost)
+
+	if err != nil {
+		status = err.Error()
+	} else {
+		status = "Ready"
+		url = "http://" + serviceURL
+		fmt.Println("########### url = %s ############# syncHandler() : controller.go", url)
+	}
+
+	c.updateGhostStatus(ghost, serviceURL, deployName, status, url)
+	c.recorder.Event(ghost, corev1.EventTypeNormal, SuccessSynced, MessageResourceSynced)
+
+
+	// Get the deployment with the name specified in Ghost.specV
 	deployment, err := c.deploymentsLister.Deployments(ghost.Namespace).Get(deploymentName)
 	// If the resource doesn't exist, we'll create it
-	if errors.IsNotFound(err) {
-		deployment, err = c.kubeclientset.AppsV1().Deployments(ghost.Namespace).Create(createDenewDeployment(ghost))
-	}
+	//if errors.IsNotFound(err) {
+	//	deployment, err = c.kubeclientset.AppsV1().Deployments(ghost.Namespace).Create(createDenewDeployment(ghost))
+	//}
 	fmt.Printf("********* deployment name: %v", deployment.Name)
 
 
@@ -325,10 +340,12 @@ func (c *GhostController) syncHandler(key string) error {
 	// If this number of the replicas on the Ghost resource is specified, and the
 	// number does not equal the current desired replicas on the Deployment, we
 	// should update the Deployment resource.
-	if ghost.Spec.Replicas != nil && *ghost.Spec.Replicas != *deployment.Spec.Replicas {
-		klog.V(4).Infof("Ghost %s replicas: %d, deployment replicas: %d", name, *ghost.Spec.Replicas, *deployment.Spec.Replicas)
-		deployment, err = c.kubeclientset.AppsV1().Deployments(ghost.Namespace).Update(newDeployment(ghost))
-	}
+//	if ghost.Spec.Replicas != nil && *ghost.Spec.Replicas != *deployment.Spec.Replicas {
+//		klog.V(4).Infof("Ghost %s replicas: %d, deployment replicas: %d", name, *ghost.Spec.Replicas, *deployment.Spec.Replicas)
+//		deployment, err = c.kubeclientset.AppsV1().Deployments(ghost.Namespace).Update(newDeployment(ghost))
+//		deployment, err = c.kubeclientset.AppsV1().Deployments(ghost.Namespace).Update(newDeployment(ghost))
+//
+//	}
 
 	// If an error occurs during Update, we'll requeue the item so we can
 	// attempt processing again later. This could have been caused by a
@@ -339,17 +356,21 @@ func (c *GhostController) syncHandler(key string) error {
 
 	// Finally, we update the status block of the Ghost resource to reflect the
 	// current state of the world
-	err = c.updateGhostStatus(ghost, deployment)
-	if err != nil {
-		return err
-	}
+
+	//err = c.updateGhostStatus(ghost, deployment)
+	//if err != nil {
+	//	return err
+	//}
 
 	c.recorder.Event(ghost, corev1.EventTypeNormal, SuccessSynced, MessageResourceSynced)
 	return nil
 }
 
-func (c *GhostController) updateGhostStatus(ghost *v1alpha1.Ghost, deployment *appsv1.Deployment) error {
+//func (c *GhostController) updateGhostStatus(ghost *v1alpha1.Ghost, deployment *appsv1.Deployment) error {
+func (c *GhostController) updateGhostStatus(ghost *v1alpha1.Ghost, serviceURL,
+	deployName, status, url string) error {
 
+	//	c.updateGhostStatus(ghost, serviceURL, deployName, status, url)
 
 	fmt.Println("*************************** updateGhostStatus() :  controller.go")
 
@@ -357,12 +378,19 @@ func (c *GhostController) updateGhostStatus(ghost *v1alpha1.Ghost, deployment *a
 	// You can use DeepCopy() to make a deep copy of original object and modify this copy
 	// Or create a copy manually for better performance
 	ghostCopy := ghost.DeepCopy()
-	ghostCopy.Status.AvailableReplicas = deployment.Status.AvailableReplicas
+	ghostCopy.Status.AvailableReplicas = 6
+
+	//ghostCopy.Status.AvailableReplicas = deployment.Status.AvailableReplicas
+
+
 	// If the CustomResourceSubresources feature gate is not enabled,
 	// we must use Update instead of UpdateStatus to update the Status block of the Ghost resource.
 	// UpdateStatus will not allow changes to the Spec of the resource,
 	// which is ideal for ensuring nothing other than resource status has been updated.
 	_, err := c.ghostclientset.GhostcontrollerV1alpha1().Ghosts(ghost.Namespace).Update(ghostCopy)
+	if err != nil {
+		fmt.Println("$$$$$$$$$$$$$ problem in updateGhostStatus: %e", err)
+	}
 	return err
 }
 
@@ -426,11 +454,9 @@ func (c *GhostController) handleObject(obj interface{}) {
 	}
 }
 
-func (c *GhostController) deployGhost(ghost *v1alpha1.Ghost) (string, string, err) {
+func (c *GhostController) deployGhost(ghost *v1alpha1.Ghost) (string, string, error) {
 
 	fmt.Println("*************************** deployGhost() :  controller.go")
-
-	var serviceURL string
 	
 	c.createPersistentVolume(ghost)
 	c.createPersistentVolumeClaim(ghost)

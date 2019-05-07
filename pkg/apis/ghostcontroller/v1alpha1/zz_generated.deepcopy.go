@@ -93,8 +93,6 @@ func (in *GhostSpec) DeepCopyInto(out *GhostSpec) {
 		*out = new(int32)
 		**out = **in
 	}
-	in.PersistentVolume.DeepCopyInto(&out.PersistentVolume)
-	in.PersistentVolumeClaim.DeepCopyInto(&out.PersistentVolumeClaim)
 	return
 }
 
