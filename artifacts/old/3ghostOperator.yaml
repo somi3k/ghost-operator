@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ghost-operator-deployment
+  labels:
+    app: ghost-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ghost-operator
+  template:
+    metadata:
+      labels:
+        app: ghost-operator
+    spec:
+      containers:
+        - name: ghost-operator
+          image: ghost-operator:v1alpha1
+          imagePullPolicy: IfNotPresent
+          command: ["/ghost-operator"]

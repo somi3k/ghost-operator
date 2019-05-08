@@ -1,0 +1,6 @@
+apiVersion: ghostcontroller.somi3k/v1alpha1
+kind: Ghost
+metadata:
+  name: ghost1
+spec:
+  replicas: 2

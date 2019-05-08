@@ -1,0 +1,4 @@
+#!/bin/bash
+
+export GOOS=darwin
+go build .
