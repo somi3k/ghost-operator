@@ -33,7 +33,7 @@
 <br>
 
 ## Using ghost-operator
-1. view running Ghost deployments <code> kubectl get ghosts </code>
+1. view running Ghost deployment <code> kubectl get ghosts </code>
 2. view full deployment configuration <code> kubectl describe ghost <deployment name>  </code>
 3. delete Ghost deployment <code> kubectl delete ghost <deployment name> </code>
 
