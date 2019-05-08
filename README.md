@@ -4,13 +4,6 @@
 
 <br>
 
-<p align="center"> 
-    <a href="https://ghost.org/">
-        <img src="https://raw.githubusercontent.com/somi3k/ghost-operator/master/images/ghost.jpg">
-    </a>
-</p>
-
-
 
 ## Running ghost-operator
 1. the Kubernetes cluster version should be greater than 1.9.
