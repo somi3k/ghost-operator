@@ -22,6 +22,8 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	ghostcontroller "github.com/somi3k/ghost-operator/pkg/apis/ghostcontroller"
+	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
+
 )
 
 // SchemeGroupVersion is group version used to register these objects
@@ -30,7 +32,7 @@ var SchemeGroupVersion = schema.GroupVersion{Group: ghostcontroller.GroupName, V
 // Kind takes an unqualified kind and returns back a Group qualified GroupKind
 func Kind(kind string) schema.GroupKind {
 
-	fmt.Println("*************************** Kind() :  register.go\n")
+	utilruntime.HandleError(fmt.Errorf("*************************** Kind() :  register.go\n"))
 
 	return SchemeGroupVersion.WithKind(kind).GroupKind()
 }
