@@ -1,31 +1,6 @@
 apiVersion: ghostcontroller.somi3k/v1alpha1
 kind: Ghost
 metadata:
-    name: ghost1
+  name: ghost1
 spec:
-    replicas: 1
-    selector:
-        matchLabels:
-            app: ghost-blog
-    template:
-        metadata:
-            labels:
-                app: ghost-blog
-        spec:
-            containers:
-                - name: ghost-blog
-                  image: ghost:2.21
-                  imagePullPolicy: IfNotPresent
-                  env:
-                      - name: url
-                        value: http://192.168.99.104
-                  ports:
-                      - containerPort: 2368
-                        name: ghost-blog
-                  volumeMounts:
-                      - name: ghost-blog-persistent-store
-                        mountPath: /var/lib/ghost/content
-            volumes:
-                - name: ghost-blog-persistent-store
-                  persistentVolumeClaim:
-                      claimName: ghost-blog-content
+  minikubeIP: 192.168.99.104

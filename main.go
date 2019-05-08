@@ -25,6 +25,8 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/klog"
+	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
+
 	// Uncomment the following line to load the gcp plugin (only required to authenticate against GKE clusters).
 	// _ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 
@@ -40,7 +42,7 @@ var (
 
 func main() {
 
-	fmt.Println("*************************** main() :  main.go")
+	utilruntime.HandleError(fmt.Errorf("*************************** main() :  main.go\n"))
 
 	flag.Parse()
 

@@ -21,8 +21,9 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-
 	ghostcontroller "github.com/somi3k/ghost-operator/pkg/apis/ghostcontroller"
+	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
+
 )
 
 // SchemeGroupVersion is group version used to register these objects
@@ -31,7 +32,7 @@ var SchemeGroupVersion = schema.GroupVersion{Group: ghostcontroller.GroupName, V
 // Kind takes an unqualified kind and returns back a Group qualified GroupKind
 func Kind(kind string) schema.GroupKind {
 
-	fmt.Println("*************************** Kind() :  register.go")
+	utilruntime.HandleError(fmt.Errorf("*************************** Kind() :  register.go\n"))
 
 	return SchemeGroupVersion.WithKind(kind).GroupKind()
 }
@@ -39,7 +40,7 @@ func Kind(kind string) schema.GroupKind {
 // Resource takes an unqualified resource and returns a Group qualified GroupResource
 func Resource(resource string) schema.GroupResource {
 
-	fmt.Println("*************************** Resource() :  register.go")
+	fmt.Println("*************************** Resource() :  register.go\n")
 
 	return SchemeGroupVersion.WithResource(resource).GroupResource()
 }
@@ -52,8 +53,7 @@ var (
 // Adds the list of known types to Scheme.
 func addKnownTypes(scheme *runtime.Scheme) error {
 
-
-	fmt.Println("*************************** addKnownTypes() :  register.go")
+	fmt.Println("*************************** addKnownTypes() :  register.go\n")
 
 	scheme.AddKnownTypes(SchemeGroupVersion,
 		&Ghost{},
