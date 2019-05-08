@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd hack
+cd ../../hack
 ./update-codegen.sh
