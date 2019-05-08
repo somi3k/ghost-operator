@@ -40,7 +40,7 @@ var (
 
 func main() {
 
-	fmt.Println("*************************** main() :  main.go")
+	fmt.Println("*************************** main() :  main.go\n")
 
 	flag.Parse()
 
