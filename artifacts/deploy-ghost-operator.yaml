@@ -43,6 +43,6 @@ spec:
     spec:
       containers:
         - name: ghost-operator
-          image: ghost-operator:v1alpha1
+          image: sks3/ghost-operator:latest
           imagePullPolicy: IfNotPresent
           command: ["/ghost-operator"]
