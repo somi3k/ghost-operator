@@ -105,7 +105,7 @@ func NewController(
 	deploymentInformer appsinformers.DeploymentInformer,
 	ghostInformer informers.GhostInformer) *GhostController {
 
-	fmt.Println("*************************** NewController() \n")
+	 utilruntime.HandleError(fmt.Errorf("*************************** NewController() \n"))
 
 	// Create event broadcaster
 	// Add ghost-operator types to the default Kubernetes Scheme so Events can be
@@ -166,7 +166,7 @@ func NewController(
 // workers to finish processing their current work items.
 func (c *GhostController) Run(threadiness int, stopCh <-chan struct{}) error {
 
-	fmt.Println("*************************** Run() \n")
+	 utilruntime.HandleError(fmt.Errorf("*************************** Run() \n"))
 
 	defer utilruntime.HandleCrash()
 	defer c.workqueue.ShutDown()
@@ -199,7 +199,7 @@ func (c *GhostController) Run(threadiness int, stopCh <-chan struct{}) error {
 // workqueue.
 func (c *GhostController) runWorker() {
 
-	fmt.Println("*************************** runWorker() \n")
+	 utilruntime.HandleError(fmt.Errorf("*************************** runWorker() \n"))
 
 	for c.processNextWorkItem() {
 	}
@@ -210,7 +210,7 @@ func (c *GhostController) runWorker() {
 // attempt to process it, by calling the syncHandler.
 func (c *GhostController) processNextWorkItem() bool {
 
-	fmt.Println("*************************** processNextWorkItem() \n")
+	 utilruntime.HandleError(fmt.Errorf("*************************** processNextWorkItem() \n"))
 
 	obj, shutdown := c.workqueue.Get()
 
@@ -269,7 +269,7 @@ func (c *GhostController) processNextWorkItem() bool {
 // with the current status of the resource.
 func (c *GhostController) syncHandler(key string) error {
 
-	fmt.Println("*************************** syncHandler() \n")
+	 utilruntime.HandleError(fmt.Errorf("*************************** syncHandler() \n"))
 
 	// Convert the namespace/name string into a distinct namespace and name
 	namespace, name, err := cache.SplitMetaNamespaceKey(key)
@@ -303,28 +303,32 @@ func (c *GhostController) syncHandler(key string) error {
 	deployment, err := c.deploymentsLister.Deployments(ghost.Namespace).Get(deploymentName)
 	// If the resource doesn't exist, we'll create it
 	if errors.IsNotFound(err) {
-		fmt.Println("---------syncHandler()----------- Get(deploymentName) isNotFound error\n")
+		 utilruntime.HandleError(fmt.Errorf("---------syncHandler()----------- Get(deploymentName) isNotFound error\n"))
 		//deployment, err = c.kubeclientset.AppsV1().Deployments(ghost.Namespace).Create(newDeployment(ghost))
+	} else {
+		 utilruntime.HandleError(fmt.Errorf("---------------syncHandler()-------------- deployment.Status.Replicas", deployment.Status.Replicas))
+		 utilruntime.HandleError(fmt.Errorf("---------------syncHandler()-------------- deployment.Status.AvailableReplicas", deployment.Status.AvailableReplicas))
+		 utilruntime.HandleError(fmt.Errorf("---------------syncHandler()-------------- deployment.Status.Replicas", ghost.Status.AvailableReplicas))
 	}
 
     var hostname string
 	if ghost.Status.Url == "" {
-		fmt.Println("------------- syncHandler() -------- ghost.Status.Url is EMPTY, calling deployGhost() \n")
+		 utilruntime.HandleError(fmt.Errorf("------------- syncHandler() -------- ghost.Status.Url is EMPTY, calling deployGhost() \n"))
 		err, deploymentName, hostname, deployment = c.deployGhost(ghost)
 	} else {
 		hostname = ghost.Status.Url
-		fmt.Println("--------------- syncHandler() -------- ghost.Status.Url = ", ghost.Status.Url)
+		 utilruntime.HandleError(fmt.Errorf("--------------- syncHandler() -------- ghost.Status.Url = ", ghost.Status.Url))
 	}
 
 	err = c.updateGhostStatus(ghost, deployment, hostname)
 	c.recorder.Event(ghost, corev1.EventTypeNormal, SuccessSynced, MessageResourceSynced)
 
 	if err != nil {
-		fmt.Println("$$$$$$$$$$$$ updateGhostStatus failed $$$$$$$ syncHandler()")
+		 utilruntime.HandleError(fmt.Errorf("$$$$$$$$$$$$ updateGhostStatus failed $$$$$$$ syncHandler()"))
 		panic(err)
 	}
 
-	fmt.Println("----------------- syncHandler() --------aft------ ghost.Status.Url = ", ghost.Status.Url)
+	 utilruntime.HandleError(fmt.Errorf("----------------- syncHandler() --------aft------ ghost.Status.Url = ", ghost.Status.Url))
 
 
 	// If an error occurs during Get/Create, we'll requeue the item so we can
@@ -374,7 +378,7 @@ func (c *GhostController) syncHandler(key string) error {
 //func (c *GhostController) updateGhostStatus(ghost *v1alpha1.Ghost, deployment *appsv1.Deployment) error {
 func (c *GhostController) updateGhostStatus(ghost *v1alpha1.Ghost, deployment *appsv1.Deployment, hostname string) error {
 
-	fmt.Println("*************************** updateGhostStatus() \n")
+	 utilruntime.HandleError(fmt.Errorf("*************************** updateGhostStatus() \n"))
 
 	// NEVER modify objects from the store. It's a read-only, local cache.
 	// You can use DeepCopy() to make a deep copy of original object and modify this copy
@@ -383,8 +387,8 @@ func (c *GhostController) updateGhostStatus(ghost *v1alpha1.Ghost, deployment *a
 	ghostCopy.Status.AvailableReplicas = deployment.Status.AvailableReplicas
 	ghostCopy.Status.Url = hostname
 
-	fmt.Println("-------- updateGhostStatus() ----before--- ghostCopy.Status.Url = ", ghostCopy.Status.Url)
-	fmt.Println("-------- updateGhostStatus() ----before--- ghost.Status.Url = ", ghost.Status.Url)
+	 utilruntime.HandleError(fmt.Errorf("-------- updateGhostStatus() ----before--- ghostCopy.Status.Url = ", ghostCopy.Status.Url))
+	 utilruntime.HandleError(fmt.Errorf("-------- updateGhostStatus() ----before--- ghost.Status.Url = ", ghost.Status.Url))
 
 	//ghostCopy.Status.AvailableReplicas = deployment.Status.AvailableReplicas
 
@@ -395,11 +399,11 @@ func (c *GhostController) updateGhostStatus(ghost *v1alpha1.Ghost, deployment *a
 	// which is ideal for ensuring nothing other than resource status has been updated.
 	_, err := c.ghostclientset.GhostcontrollerV1alpha1().Ghosts(ghost.Namespace).Update(ghostCopy)
 	if err != nil {
-		fmt.Println("$$$$$$$$$$$$$ problem in updateGhostStatus: %e", err)
+		 utilruntime.HandleError(fmt.Errorf("$$$$$$$$$$$$$ problem in updateGhostStatus: %e", err))
 	}
 
-	fmt.Println("-------- updateGhostStatus() ----after----- ghostCopy.Status.Url = ", ghostCopy.Status.Url)
-	fmt.Println("-------- updateGhostStatus() ----after----- ghost.Status.Url = ", ghost.Status.Url)
+	 utilruntime.HandleError(fmt.Errorf("-------- updateGhostStatus() ----after----- ghostCopy.Status.Url = ", ghostCopy.Status.Url))
+	 utilruntime.HandleError(fmt.Errorf("-------- updateGhostStatus() ----after----- ghost.Status.Url = ", ghost.Status.Url))
 
 	return err
 }
@@ -410,7 +414,7 @@ func (c *GhostController) updateGhostStatus(ghost *v1alpha1.Ghost, deployment *a
 // passed resources of any type other than Ghost.
 func (c *GhostController) enqueueGhost(obj interface{}) {
 
-	fmt.Println("*************************** enqueueGhost() \n")
+	 utilruntime.HandleError(fmt.Errorf("*************************** enqueueGhost() \n"))
 
 	var key string
 	var err error
@@ -430,7 +434,7 @@ func (c *GhostController) enqueueGhost(obj interface{}) {
 func (c *GhostController) handleObject(obj interface{}) {
 
 
-	fmt.Println("*************************** handleObject() \n")
+	 utilruntime.HandleError(fmt.Errorf("*************************** handleObject() \n"))
 
 	var object metav1.Object
 	var ok bool
@@ -469,7 +473,7 @@ func (c *GhostController) handleObject(obj interface{}) {
 
 func (c *GhostController) deployGhost(ghost *v1alpha1.Ghost) (error, string, string, *appsv1.Deployment) {
 
-	fmt.Println("*************************** deployGhost() \n")
+	 utilruntime.HandleError(fmt.Errorf("*************************** deployGhost() \n"))
 
 	c.createPersistentVolume(ghost)
 	c.createPersistentVolumeClaim(ghost)
@@ -478,8 +482,8 @@ func (c *GhostController) deployGhost(ghost *v1alpha1.Ghost) (error, string, str
 	replica := int32(1)
 	err, deployName, hostname, deployment := c.createDeployment(ghost, &replica)
 
-	fmt.Println("------------ deployGhost() ------------ deployName = \n", deployName)
-	fmt.Println("------------ deployGhost() ------------ hostname = \n", hostname)
+	 utilruntime.HandleError(fmt.Errorf("------------ deployGhost() ------------ deployName = \n", deployName))
+	 utilruntime.HandleError(fmt.Errorf("------------ deployGhost() ------------ hostname = \n", hostname))
 
 	if err != nil {
 		return err, "", "", nil
@@ -494,7 +498,7 @@ func (c *GhostController) deployGhost(ghost *v1alpha1.Ghost) (error, string, str
 // the Ghost resource that 'owns' it.
 func (c *GhostController) createDeployment(ghost *v1alpha1.Ghost, replica *int32) (error, string, string, *appsv1.Deployment) {
 
-	fmt.Println("*************************** createDeployment() \n")
+	 utilruntime.HandleError(fmt.Errorf("*************************** createDeployment() \n"))
 
 	namespace := getNamespace(ghost)
 
@@ -502,7 +506,7 @@ func (c *GhostController) createDeployment(ghost *v1alpha1.Ghost, replica *int32
 
 	hostname := "http://" + ghost.Spec.MinikubeIP + ":" + fmt.Sprintf("%d", GHOST_EXTERNAL_PORT)
 
-	fmt.Println("------------ createDeployment() ----------- hostname = ", hostname)
+	 utilruntime.HandleError(fmt.Errorf("------------ createDeployment() ----------- hostname = ", hostname))
 
 	deployment := &appsv1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
@@ -571,7 +575,7 @@ func (c *GhostController) createDeployment(ghost *v1alpha1.Ghost, replica *int32
 		},
 	}
 
-	fmt.Println("------------ creating deployment ------------ createDeployment()  \n")
+	 utilruntime.HandleError(fmt.Errorf("------------ creating deployment ------------ createDeployment()  \n"))
 
 	result, err := c.kubeclientset.AppsV1().Deployments(namespace).Create(deployment)
 
@@ -580,8 +584,7 @@ func (c *GhostController) createDeployment(ghost *v1alpha1.Ghost, replica *int32
 		return err, "", "", nil
 	}
 
-	fmt.Println("------------ created deployment %s ------------ createDeployment()  \n",
-		result.GetObjectMeta().GetName())
+	 utilruntime.HandleError(fmt.Errorf("------------ created deployment %s ------------ createDeployment()  \n", result.GetObjectMeta().GetName()))
 
 	return nil, result.ObjectMeta.GetName(), hostname, deployment
 }
@@ -589,7 +592,7 @@ func (c *GhostController) createDeployment(ghost *v1alpha1.Ghost, replica *int32
 
 func(c *GhostController) createPersistentVolume(ghost *v1alpha1.Ghost) {
 
-	fmt.Println("*************************** createPersistentVolume() \n")
+	 utilruntime.HandleError(fmt.Errorf("*************************** createPersistentVolume() \n"))
 
 	persistentVolume :=  &corev1.PersistentVolume{
 		ObjectMeta: metav1.ObjectMeta{
@@ -617,7 +620,7 @@ func(c *GhostController) createPersistentVolume(ghost *v1alpha1.Ghost) {
 	}
 	persistentVolumeClient := c.kubeclientset.CoreV1().PersistentVolumes()
 
-	fmt.Println("------------ creating pv ------------ createPersistentVolume()  \n")
+	 utilruntime.HandleError(fmt.Errorf("------------ creating pv ------------ createPersistentVolume()  \n"))
 
 	result, err := persistentVolumeClient.Create(persistentVolume)
 	if err != nil {
@@ -629,7 +632,7 @@ func(c *GhostController) createPersistentVolume(ghost *v1alpha1.Ghost) {
 
 func (c *GhostController) createPersistentVolumeClaim(ghost *v1alpha1.Ghost) {
 
-	fmt.Println("*************************** createPersistentVolumeClaim() \n")
+	 utilruntime.HandleError(fmt.Errorf("*************************** createPersistentVolumeClaim() \n"))
 
 	persistentVolumeClaim := &corev1.PersistentVolumeClaim{
 		ObjectMeta: metav1.ObjectMeta{
@@ -654,7 +657,7 @@ func (c *GhostController) createPersistentVolumeClaim(ghost *v1alpha1.Ghost) {
 	namespace := getNamespace(ghost)
 	persistentVolumeClaimClient := c.kubeclientset.CoreV1().PersistentVolumeClaims(namespace)
 
-	fmt.Println("------------ creating pvc ------------ createPersistentVolumeClaim()  \n")
+	 utilruntime.HandleError(fmt.Errorf("------------ creating pvc ------------ createPersistentVolumeClaim()  \n"))
 	result, err := persistentVolumeClaimClient.Create(persistentVolumeClaim)
 	if err != nil {
 		panic(err)
@@ -666,7 +669,7 @@ func (c *GhostController) createPersistentVolumeClaim(ghost *v1alpha1.Ghost) {
 
 func (c *GhostController) createService(ghost *v1alpha1.Ghost) {
 
-	fmt.Println("*************************** createService() \n")
+	 utilruntime.HandleError(fmt.Errorf("*************************** createService() \n"))
 
 	namespace := getNamespace(ghost)
 	serviceClient := c.kubeclientset.CoreV1().Services(namespace)
@@ -702,7 +705,7 @@ func (c *GhostController) createService(ghost *v1alpha1.Ghost) {
 		panic(err1)
 	}
 
-	fmt.Println("------------ created svc ----------- createService() " + result1.GetObjectMeta().GetName() + "\n")
+	 utilruntime.HandleError(fmt.Errorf("------------ created svc ----------- createService() " + result1.GetObjectMeta().GetName() + "\n"))
 
 	//nodePort1 := result1.Spec.Ports[0].NodePort
 	//nodePort := fmt.Sprint(nodePort1)
@@ -723,7 +726,7 @@ func (c *GhostController) createService(ghost *v1alpha1.Ghost) {
 
 func getNamespace(ghost *v1alpha1.Ghost) string {
 
-	fmt.Println("*************************** getNamespace() \n")
+	 utilruntime.HandleError(fmt.Errorf("*************************** getNamespace() \n"))
 
 	namespace := corev1.NamespaceDefault
 	if ghost.Namespace != "" {

@@ -4,4 +4,3 @@ metadata:
   name: ghost1
 spec:
   minikubeIP: 192.168.99.104
-  replicas: 1

@@ -34,7 +34,6 @@ type Ghost struct {
 
 // GhostSpec is the spec for a Ghost resource
 type GhostSpec struct {
-	Replicas *int32   `json:"replicas"`
 	MinikubeIP string `json:"minikubeIP"`
 }
 
