@@ -1,6 +1,6 @@
 # ghost-operator
 
-*ghost-operator* is a Kubernetes API extension consisting of a Custom Resource Definition and Custom Controller following the Operator pattern.  The goal of this project is to create an operator which can be deployed on a Kubernetes cluster, allowing the user to create and manage Ghost instances via the kubectl command line interface.  This ghost-operator is based on the sample-controller cloned from https://github.com/kubernetes/sample-controller and is *UNDER DEVELOPMENT*.  It will be updated incrementally as features are added and this Readme will reflect the current progress of this project.
+*ghost-operator* is a Kubernetes API extension consisting of a Custom Resource Definition and Custom Controller following the Operator pattern.  The goal of this project is to create an operator which can be deployed on a Kubernetes cluster, allowing the user to create and manage Ghost instances via the kubectl command line interface.  This ghost-operator is based on the sample-controller cloned from https://github.com/kubernetes/sample-controller and will be updated incrementally as features are added.  This Readme will reflect the current state of this project.
 
 <br>
 
